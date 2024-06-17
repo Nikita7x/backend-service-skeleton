@@ -6,6 +6,10 @@
 ```bash
 docker compose up
 ```
+Не забыть применить миграции внутри контейнера 
+```bash
+alembic upgrade head
+```
 
 # Тестирование
 ```bash
