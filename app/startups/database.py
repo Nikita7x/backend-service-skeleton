@@ -1,5 +1,16 @@
-from aiohttp import web
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+DATABASE_URL = "postgresql+asyncpg://user:password@db/dbname"
+
+engine = create_async_engine(DATABASE_URL, echo=True)
+SessionLocal = sessionmaker(
+    autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
+)
+Base = declarative_base()
 
 
-async def init_db(app: web.Application):
-    await app['db'].set_bind(app['config'].DATABASE_URI)
+async def get_async_db():
+    async with SessionLocal() as session:
+        yield session
